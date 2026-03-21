@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --primary: 238 82% 59%; /* Indigo-600 */
+        --accent: 158 64% 52%;  /* Emerald-500 */
+        --bg-main: 210 40% 98%; /* Slate-50 */
+        --text-main: 222 47% 11%; /* Slate-900 */
+        --card-bg: 255 255% 255%;
+        --card-border: 214 32% 91%;
+    }
+
+    .dark {
+        --bg-main: 222 47% 4%; /* Sangat Gelap */
+        --text-main: 213 27% 84%; /* Abu-abu terang */
+        --card-bg: 222 47% 7%;
+        --card-border: 217 33% 17%;
+        --glass: rgba(15, 23, 42, 0.8);
+        --glass-border: rgba(255, 255, 255, 0.1);
+    }
+}
+
+@layer components {
+    .glass {
+        @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/10;
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    .text-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-emerald-500 to-indigo-700 dark:from-indigo-400 dark:via-emerald-400 dark:to-indigo-500;
+    }
+
+    .btn-premium {
+        @apply relative overflow-hidden px-8 py-3 rounded-2xl font-bold text-white transition-all duration-300
+               bg-gradient-to-r from-indigo-600 to-indigo-700 hover:shadow-xl hover:shadow-indigo-500/30 hover:scale-105 active:scale-95;
+    }
+}
+
+.reveal {
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
