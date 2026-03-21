@@ -1,8 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/katalog', function () {
+    return view('katalog');
+})->name('katalog');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -28,6 +35,14 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/settings', function () {
         return view('admin.settings');
     })->name('admin.settings');
+    
+    Route::get('/features', function () {
+        return view('admin.features');
+    })->name('admin.features');
+    
+    Route::get('/testimonials', function () {
+        return view('admin.testimonials');
+    })->name('admin.testimonials');
 });
 
 require __DIR__.'/auth.php';

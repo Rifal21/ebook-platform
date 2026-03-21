@@ -16,7 +16,7 @@ new class extends Component {
             <div>
                 <h2 class="text-4xl font-black text-slate-900 dark:text-white">Koleksi <span
                         class="text-indigo-600">Saya</span></h2>
-                <p class="text-slate-500 dark:text-slate-400 mt-2">Semua e-book yang telah Anda miliki di ElitePustaka.
+                <p class="text-slate-500 dark:text-slate-400 mt-2">Semua e-book yang telah Anda miliki di Nexora.
                 </p>
             </div>
             <a href="/"
