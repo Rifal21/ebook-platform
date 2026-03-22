@@ -62,7 +62,7 @@ new class extends Component {
 
         if (!$this->editingEbookId) {
             $rules['cover'] = 'required|image|max:2048';
-            $rules['file'] = 'required|mimes:pdf,epub|max:10240';
+            $rules['file'] = 'required|mimes:pdf,epub,xls,xlsx,doc,docx,json|max:10240';
         }
 
         $this->validate($rules);
@@ -180,7 +180,7 @@ new class extends Component {
                         <div>
                             <label
                                 class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-3 ml-2">File
-                                (PDF/Epub)</label>
+                                (PDF/Epub/Doc/Xls/Json)</label>
                             <input type="file" wire:model="file"
                                 class="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
                             @error('file')
