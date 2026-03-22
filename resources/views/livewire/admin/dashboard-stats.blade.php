@@ -14,9 +14,9 @@ new class extends Component {
     public function mount()
     {
         $this->totalEbooks = Ebook::count();
-        $this->totalSales = Order::where('status', 'completed')->count();
-        $this->totalRevenue = Order::where('status', 'completed')->sum('total_amount');
-        $this->recentTransactions = Order::with(['user', 'ebook'])
+        $this->totalSales = Order::whereIn('status', ['completed', 'paid', 'success'])->count();
+        $this->totalRevenue = Order::whereIn('status', ['completed', 'paid', 'success'])->sum('total_amount');
+        $this->recentTransactions = Order::with(['user', 'ebook', 'transaction'])
             ->latest()
             ->take(5)
             ->get();
@@ -75,37 +75,72 @@ new class extends Component {
         </div>
     </div>
 
-    <div
+    <div id="transaksi"
         class="reveal active bg-white dark:bg-slate-900 rounded-[40px] p-10 shadow-sm border border-slate-100 dark:border-white/5 overflow-hidden">
-        <h4 class="text-2xl font-black text-slate-900 dark:text-white mb-10">Transaksi Terbaru</h4>
+        <div class="mb-8 flex justify-between items-center">
+            <div>
+                <h4 class="text-2xl font-black text-slate-900 dark:text-white">Riwayat Transaksi</h4>
+                <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">5 Transaksi Terakhir di Platform</p>
+            </div>
+            <a href="{{ route('admin.transactions') }}" class="px-5 py-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-black uppercase tracking-widest hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-colors">
+                Lihat Semua
+            </a>
+        </div>
+
         @if ($recentTransactions->isEmpty())
-            <div
-                class="text-center py-20 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-dashed border-slate-200 dark:border-white/5">
+            <div class="text-center py-20 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-dashed border-slate-200 dark:border-white/5">
                 <p class="text-slate-400 font-bold">Belum ada transaksi terekam.</p>
             </div>
         @else
-            <div class="space-y-6">
-                @foreach ($recentTransactions as $tx)
-                    <div
-                        class="flex justify-between items-center p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all border border-transparent hover:border-slate-200 dark:hover:border-white/10 group">
-                        <div class="flex items-center space-x-6">
-                            <div
-                                class="w-14 h-14 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center font-black dark:text-white border border-slate-200 dark:border-white/5">
-                                {{ substr($tx->user->name, 0, 1) }}
-                            </div>
-                            <div>
-                                <p class="font-black text-lg text-slate-900 dark:text-white">{{ $tx->user->name }}</p>
-                                <p class="text-slate-500 text-sm">{{ $tx->ebook->title }}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-black text-xl text-slate-900 dark:text-white">Rp
-                                {{ number_format($tx->total_amount, 0, ',', '.') }}</p>
-                            <p class="text-[10px] uppercase font-black tracking-widest text-emerald-500">
-                                {{ $tx->status }}</p>
-                        </div>
-                    </div>
-                @endforeach
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse min-w-[700px]">
+                    <thead>
+                        <tr class="border-b border-slate-100 dark:border-white/5">
+                            <th class="py-4 px-4 text-xs font-black uppercase tracking-widest text-slate-400">Pengguna</th>
+                            <th class="py-4 px-4 text-xs font-black uppercase tracking-widest text-slate-400">E-Book</th>
+                            <th class="py-4 px-4 text-xs font-black uppercase tracking-widest text-slate-400">Tanggal</th>
+                            <th class="py-4 px-4 text-xs font-black uppercase tracking-widest text-slate-400">Nominal</th>
+                            <th class="py-4 px-4 text-xs font-black uppercase tracking-widest text-slate-400 text-right">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-white/5">
+                        @foreach ($recentTransactions as $tx)
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800">
+                                            {{ substr($tx->user->name, 0, 1) }}
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-sm text-slate-900 dark:text-white">{{ $tx->user->name }}</p>
+                                            <p class="text-[10px] text-slate-500">{{ $tx->user->email }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <p class="font-bold text-sm text-slate-900 dark:text-slate-300 max-w-[200px] truncate">{{ $tx->ebook->title }}</p>
+                                    <p class="text-[10px] text-slate-500 font-mono mt-1">#{{ $tx->invoice_number }}</p>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <p class="font-bold text-sm text-slate-900 dark:text-white uppercase">{{ $tx->transaction ? str_replace('_', ' ', $tx->transaction->payment_method) : '-' }}</p>
+                                    <p class="text-[10px] text-slate-500">{{ $tx->created_at->format('d M Y, H:i') }}</p>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <p class="font-black text-sm text-slate-900 dark:text-white">Rp {{ number_format($tx->total_amount, 0, ',', '.') }}</p>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    @if(in_array($tx->status, ['completed', 'paid', 'success']))
+                                        <span class="px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest border border-emerald-200 dark:border-emerald-800">Berhasil</span>
+                                    @elseif(in_array($tx->status, ['failed', 'cancel', 'deny', 'expire']))
+                                        <span class="px-3 py-1.5 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 text-[10px] font-black uppercase tracking-widest border border-rose-200 dark:border-rose-800">Gagal</span>
+                                    @else
+                                        <span class="px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-black uppercase tracking-widest border border-amber-200 dark:border-amber-800">Pending</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         @endif
     </div>

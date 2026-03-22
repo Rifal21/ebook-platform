@@ -18,8 +18,8 @@ class LoginForm extends Form
     #[Validate('required|string')]
     public string $password = '';
 
-    #[Validate('boolean')]
-    public bool $remember = false;
+    #[Validate('nullable|boolean')]
+    public $remember = false;
 
     /**
      * Attempt to authenticate the request's credentials.
@@ -30,7 +30,9 @@ class LoginForm extends Form
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
+        $shouldRemember = filter_var($this->remember, FILTER_VALIDATE_BOOLEAN);
+
+        if (! Auth::attempt($this->only(['email', 'password']), $shouldRemember)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

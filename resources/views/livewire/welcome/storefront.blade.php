@@ -30,16 +30,7 @@ new class extends Component {
             return $this->redirect(route('login'), navigate: true);
         }
 
-        // Simpan sebagai Order Terbeli (Simulasi Berhasil)
-        Order::updateOrCreate(
-            ['user_id' => auth()->id(), 'ebook_id' => $ebook->id],
-            [
-                'total_amount' => $ebook->price,
-                'status' => 'completed',
-            ],
-        );
-
-        return $this->redirect(route('dashboard'), navigate: true);
+        return $this->redirect(route('checkout.show', $ebook->id), navigate: true);
     }
 }; ?>
 

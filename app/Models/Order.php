@@ -11,6 +11,7 @@ class Order extends Model
     use HasUuids;
 
     protected $fillable = [
+        'invoice_number',
         'user_id',
         'ebook_id',
         'total_amount',

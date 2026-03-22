@@ -21,10 +21,10 @@ new class extends Component {
         $this->hero_badge = Setting::get('hero_badge', 'Platform Literasi No. 1 di Indonesia');
         $this->hero_title = Setting::get('hero_title', 'Ruang <span class="text-gradient">Imajinasi</span> Tanpa Batas.');
         $this->hero_subtitle = Setting::get('hero_subtitle', 'Akses ribuan koleksi e-book premium dari penulis dunia langsung di genggaman Anda.');
-        $this->feature_title = Setting::get('feature_title', 'Kenapa <span class="text-gradient">ElitePustaka?</span>');
+        $this->feature_title = Setting::get('feature_title', 'Kenapa <span class="text-gradient">Nexora?</span>');
         $this->feature_subtitle = Setting::get('feature_subtitle', 'Kami menghadirkan pengalaman membaca digital yang jauh lebih eksklusif daripada platform lain.');
         $this->testimonial_title = Setting::get('testimonial_title', 'Kisah Sukses <span class="text-gradient">Pembaca</span>');
-        $this->footer_text = Setting::get('footer_text', 'ElitePustaka berdedikasi untuk memajukan bangsa Indonesia melalui akses literasi digital yang adil dan berkualitas tinggi.');
+        $this->footer_text = Setting::get('footer_text', 'Nexora berdedikasi untuk memajukan bangsa Indonesia melalui akses literasi digital yang adil dan berkualitas tinggi.');
     }
 
     public function save()
