@@ -92,14 +92,14 @@
                     </svg>
                     <span class="font-bold whitespace-nowrap overflow-hidden text-ellipsis">Pengaturan</span>
                 </a>
-                <a href="#"
+                <a href="{{ route('admin.transactions') }}"
                     class="flex items-center space-x-4 px-4 py-3 rounded-2xl text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all outline-none">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M16 11V7a4 4 0 118 0m-9.172 6.172L12 18.343l-1.828-1.828m4.542-4.542L12 11.234 9.286 13.948m11.234-2.714l-2.714-2.714">
                         </path>
                     </svg>
-                    <span>Pesanan</span>
+                    <span>Pesanan/Transaksi</span>
                 </a>
             </nav>
 

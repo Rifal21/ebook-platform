@@ -6,7 +6,7 @@
             </h2>
             <div class="flex items-center space-x-4">
                 <span
-                    class="px-4 py-2 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-black uppercase tracking-widest">{{ auth()->user()->orders()->where('status', 'completed')->count() }}
+                    class="px-4 py-2 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-black uppercase tracking-widest">{{ auth()->user()->orders()->whereIn('status', ['completed', 'paid', 'success'])->count() }}
                     E-Book Dimiliki</span>
             </div>
         </div>

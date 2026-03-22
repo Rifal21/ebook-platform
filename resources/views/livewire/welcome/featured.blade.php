@@ -8,6 +8,14 @@ new class extends Component {
     {
         return Ebook::with('category')->where('is_published', true)->latest()->first();
     }
+
+    public function buy(Ebook $ebook)
+    {
+        if (!auth()->check()) {
+            return $this->redirect(route('login'), navigate: true);
+        }
+        return $this->redirect(route('checkout.show', $ebook->id), navigate: true);
+    }
 }; ?>
 
 <div>
@@ -53,7 +61,7 @@ new class extends Component {
                                 </div>
                             </div>
 
-                            <button wire:click="$parent.buy('{{ $this->featured->id }}')"
+                            <button wire:click="buy('{{ $this->featured->id }}')"
                                 class="px-12 py-5 rounded-[22px] bg-white text-slate-900 font-black uppercase text-xs tracking-[2px] transition-all hover:bg-emerald-400 hover:scale-105 active:scale-95 shadow-xl shadow-white/5">Beli
                                 Koleksi Terbatas</button>
                         </div>

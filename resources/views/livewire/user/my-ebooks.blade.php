@@ -6,7 +6,7 @@ use Livewire\Volt\Component;
 new class extends Component {
     public function getMyEbooksProperty()
     {
-        return auth()->user()->orders()->with('ebook.category')->where('status', 'completed')->latest()->get();
+        return auth()->user()->orders()->with('ebook.category')->whereIn('status', ['completed', 'paid', 'success'])->latest()->get();
     }
 }; ?>
 
@@ -78,4 +78,6 @@ new class extends Component {
             </div>
         @endif
     </div>
+
+
 </div>
