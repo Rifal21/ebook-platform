@@ -311,16 +311,11 @@
 
                 const data = await response.json();
 
-                if (response.ok && data.snapToken) {
-                    window.snap.pay(data.snapToken, {
-                        onSuccess: (res) => window.location.href = "{{ route('dashboard') }}?payment=success",
-                        onPending: (res) => window.location.href = "{{ route('dashboard') }}?payment=pending",
-                        onError: (res) => window.location.href = "{{ route('dashboard') }}?payment=error",
-                        onClose: () => {
-                            btn.disabled = false;
-                            btn.innerHTML = `<span class="relative z-10">Bayar Sekarang</span>`;
-                        }
-                    });
+                if (response.ok && data.redirect && data.payment_url) {
+                    // Open Midtrans in new tab
+                    window.open(data.payment_url, '_blank');
+                    // Redirect current tab to transactions
+                    window.location.href = data.redirect;
                 } else {
                     throw new Error(data.error || 'Server error occurred');
                 }

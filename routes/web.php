@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,8 +26,12 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/checkout/{ebook}', [\App\Http\Controllers\CheckoutController::class, 'show'])->name('checkout.show');
-    Route::post('/checkout/{ebook}', [\App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/orders/{order}/invoice', [InvoiceController::class, 'show'])->name('orders.invoice');
+    Route::get('/checkout/{ebook}', [CheckoutController::class, 'show'])->name('checkout.show');
+    Route::post('/checkout/{ebook}', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/checkout-success', function() {
+        return view('checkout.success');
+    })->name('checkout.success');
 });
 
 

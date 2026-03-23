@@ -15,7 +15,9 @@ class Order extends Model
         'user_id',
         'ebook_id',
         'total_amount',
-        'status'
+        'status',
+        'payment_url',
+        'snap_token'
     ];
 
     public function user()
