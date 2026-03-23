@@ -53,6 +53,9 @@ class CheckoutController extends Controller
                     'quantity' => 1,
                     'name' => substr($ebook->title, 0, 50)
                 ]
+            ],
+            'callbacks' => [
+                'finish' => route('checkout.success')
             ]
         ];
 
@@ -68,7 +71,16 @@ class CheckoutController extends Controller
             ])->post($url, $params);
 
             if ($response->successful()) {
-                return response()->json(['snapToken' => $response->json('token')]);
+                $data = $response->json();
+                $order->update([
+                    'snap_token' => $data['token'],
+                    'payment_url' => $data['redirect_url']
+                ]);
+
+                return response()->json([
+                    'redirect' => route('transactions'),
+                    'payment_url' => $data['redirect_url']
+                ]);
             }
 
             return response()->json(['error' => 'Gagal membuat transaksi: ' . $response->body()], 500);
