@@ -12,7 +12,10 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 space-y-12">
         <livewire:user.my-ebooks />
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <livewire:user.testimonial-form />
+        </div>
     </div>
 </x-app-layout>

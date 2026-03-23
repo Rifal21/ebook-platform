@@ -57,6 +57,10 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('admin/testimonials', function () {
         return view('admin.testimonials');
     })->name('admin.testimonials');
+
+    Route::get('admin/collection', function () {
+        return view('admin.my-collection');
+    })->name('admin.collection');
 });
 
 require __DIR__.'/auth.php';

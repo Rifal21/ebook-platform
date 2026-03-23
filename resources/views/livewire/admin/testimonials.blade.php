@@ -12,7 +12,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->testimonials = Testimonial::all();
+        $this->testimonials = Testimonial::latest()->get();
     }
 
     public function save()
@@ -34,12 +34,20 @@ new class extends Component {
                 'name' => $this->name,
                 'role' => $this->role,
                 'text' => $this->text,
+                'is_approved' => true, // Admin creations are approved by default
             ]);
         }
 
         $this->reset(['name', 'role', 'text', 'editId']);
-        $this->testimonials = Testimonial::all();
+        $this->testimonials = Testimonial::latest()->get();
         session()->flash('message', 'Data testimoni berhasil disimpan!');
+    }
+
+    public function toggleApproval($id)
+    {
+        $t = Testimonial::find($id);
+        $t->update(['is_approved' => !$t->is_approved]);
+        $this->testimonials = Testimonial::latest()->get();
     }
 
     public function edit($id)
@@ -54,7 +62,7 @@ new class extends Component {
     public function delete($id)
     {
         Testimonial::find($id)->delete();
-        $this->testimonials = Testimonial::all();
+        $this->testimonials = Testimonial::latest()->get();
     }
 
     public function cancel()
@@ -137,16 +145,42 @@ new class extends Component {
                         <th class="py-4 px-6 text-xs font-black uppercase text-slate-400">Nama</th>
                         <th class="py-4 px-6 text-xs font-black uppercase text-slate-400">Pekerjaan</th>
                         <th class="py-4 px-6 text-xs font-black uppercase text-slate-400">Testimoni</th>
+                        <th class="py-4 px-6 text-xs font-black uppercase text-slate-400">Status</th>
                         <th class="py-4 px-6 text-xs font-black uppercase text-slate-400 text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-white/5">
                     @forelse ($testimonials as $t)
                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                            <td class="py-4 px-6 font-bold text-slate-900 dark:text-white w-48">{{ $t->name }}</td>
+                            <td class="py-4 px-6">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-slate-900 dark:text-white">{{ $t->name }}</span>
+                                    @if ($t->user_id)
+                                        <span class="text-[9px] font-black uppercase text-indigo-500 flex items-center mt-1">
+                                            <i class="fa-solid fa-user-check mr-1"></i> User Terdaftar
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
                             <td class="py-4 px-6 font-medium text-slate-500 dark:text-slate-400 text-sm">
                                 {{ $t->role }}</td>
-                            <td class="py-4 px-6 text-slate-500 text-sm max-w-sm truncate">{{ $t->text }}</td>
+                            <td class="py-4 px-6 text-slate-500 text-sm max-w-sm">
+                                <p class="line-clamp-2">{{ $t->text }}</p>
+                            </td>
+                            <td class="py-4 px-6">
+                                @if (!$t->is_approved)
+                                    <button wire:click="toggleApproval({{ $t->id }})" 
+                                        class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-[2px] hover:bg-indigo-700 transition-all flex items-center space-x-2">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Setujui</span>
+                                    </button>
+                                @else
+                                    <div class="px-5 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-[2px] w-fit flex items-center space-x-2">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        <span>Terbit</span>
+                                    </div>
+                                @endif
+                            </td>
                             <td class="py-4 px-6 text-right space-x-3 w-32">
                                 <button wire:click="edit({{ $t->id }})"
                                     class="text-indigo-600 hover:text-indigo-800 font-bold text-sm">Edit</button>

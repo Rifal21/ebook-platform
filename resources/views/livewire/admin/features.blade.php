@@ -15,6 +15,24 @@ new class extends Component {
         $this->features = Feature::all();
     }
 
+    public function with()
+    {
+        return [
+            'availableIcons' => [
+                'M13 10V3L4 14h7v7l9-11h-7z' => 'Petir',
+                'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' => 'Sukses',
+                'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' => 'Buku',
+                'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z' => 'Bintang Berkilau',
+                'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z' => 'Bintang',
+                'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' => 'Gembok Keamanan',
+                'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' => 'Hati',
+                'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' => 'Tas Kerja',
+                'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z' => 'Smartphone',
+                'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z' => 'Awan',
+            ]
+        ];
+    }
+
     public function save()
     {
         $this->validate([
@@ -100,15 +118,28 @@ new class extends Component {
                     @enderror
                 </div>
                 <div>
-                    <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2 ml-2">Ikon (SVG
-                        Path - Opsional)</label>
-                    <input wire:model="icon" type="text" placeholder="M12 8c..."
-                        class="w-full bg-slate-50 dark:bg-slate-950/50 border-2 border-slate-100 dark:border-white/5 rounded-2xl px-6 py-4 text-slate-900 dark:text-white font-medium outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-mono text-xs">
-                    <p class="text-xs text-slate-500 mt-2 px-2">Cari icon svg di heroicons.com dan paste value bagian
-                        dalamnya (d atribut).</p>
-                    @error('icon')
-                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                    @enderror
+                    <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-4 ml-2">Pilih Ikon Cepat</label>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        @foreach($availableIcons as $path => $name)
+                            <button type="button" wire:click="$set('icon', '{{ $path }}')" 
+                                class="p-4 rounded-2xl border-2 flex flex-col items-center justify-center space-y-3 transition-all 
+                                {{ $icon === $path ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' : 'border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-slate-950/50 text-slate-400 hover:border-indigo-200 dark:hover:border-indigo-800' }}">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="{{ $path }}"></path>
+                                </svg>
+                                <span class="text-[10px] font-bold text-center leading-tight">{{ $name }}</span>
+                            </button>
+                        @endforeach
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2 ml-2">Atau Paste SVG Custom (d-path)</label>
+                        <input wire:model="icon" type="text" placeholder="M12 8c..."
+                            class="w-full bg-slate-50 dark:bg-slate-950/50 border-2 border-slate-100 dark:border-white/5 rounded-2xl px-6 py-4 text-slate-900 dark:text-white font-medium outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-mono text-xs">
+                        @error('icon')
+                            <span class="text-red-500 text-xs mt-2 block ml-2">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="flex items-center space-x-4">

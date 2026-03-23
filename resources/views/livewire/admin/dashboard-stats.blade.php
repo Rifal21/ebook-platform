@@ -26,7 +26,7 @@ new class extends Component {
 <div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <div
-            class="reveal active bg-white dark:bg-slate-900 p-8 rounded-[35px] shadow-sm border border-slate-100 dark:border-white/5 hover:shadow-md transition-all">
+            class="reveal active bg-white dark:bg-slate-900 p-6 md:p-8 rounded-[35px] shadow-sm border border-slate-100 dark:border-white/5 hover:shadow-md transition-all">
             <div class="flex items-center space-x-4 mb-4">
                 <div
                     class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
@@ -42,7 +42,7 @@ new class extends Component {
                 {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
         </div>
 
-        <div class="reveal active bg-white dark:bg-slate-900 p-8 rounded-[35px] shadow-sm border border-slate-100 dark:border-white/5 hover:shadow-md transition-all"
+        <div class="reveal active bg-white dark:bg-slate-900 p-6 md:p-8 rounded-[35px] shadow-sm border border-slate-100 dark:border-white/5 hover:shadow-md transition-all"
             style="transition-delay: 100ms">
             <div class="flex items-center space-x-4 mb-4">
                 <div
@@ -58,7 +58,7 @@ new class extends Component {
             <h3 class="text-4xl font-black text-slate-900 dark:text-white">{{ $totalSales }}</h3>
         </div>
 
-        <div class="reveal active bg-white dark:bg-slate-900 p-8 rounded-[35px] shadow-sm border border-slate-100 dark:border-white/5 hover:shadow-md transition-all"
+        <div class="reveal active bg-white dark:bg-slate-900 p-6 md:p-8 rounded-[35px] shadow-sm border border-slate-100 dark:border-white/5 hover:shadow-md transition-all"
             style="transition-delay: 200ms">
             <div class="flex items-center space-x-4 mb-4">
                 <div
@@ -76,7 +76,7 @@ new class extends Component {
     </div>
 
     <div id="transaksi"
-        class="reveal active bg-white dark:bg-slate-900 rounded-[40px] p-10 shadow-sm border border-slate-100 dark:border-white/5 overflow-hidden">
+        class="reveal active bg-white dark:bg-slate-900 rounded-[40px] p-6 md:p-10 shadow-sm border border-slate-100 dark:border-white/5 overflow-hidden">
         <div class="mb-8 flex justify-between items-center">
             <div>
                 <h4 class="text-2xl font-black text-slate-900 dark:text-white">Riwayat Transaksi</h4>
