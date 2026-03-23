@@ -12,12 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('testimonials', function (Blueprint $table) {
-            if (!Schema::hasColumn('testimonials', 'user_id')) {
-                $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            }
-            if (!Schema::hasColumn('testimonials', 'is_approved')) {
-                $table->boolean('is_approved')->default(false);
-            }
+            $table->foreignUuid('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->boolean('is_approved')->default(false);
         });
     }
 
