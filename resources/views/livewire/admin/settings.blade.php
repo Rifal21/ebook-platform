@@ -58,7 +58,7 @@ new class extends Component {
 }; ?>
 
 <div
-    class="reveal active bg-white dark:bg-slate-900 rounded-[40px] p-10 shadow-sm border border-slate-100 dark:border-white/5 relative">
+    class="reveal active bg-white dark:bg-slate-900 rounded-[40px] p-6 md:p-10 shadow-sm border border-slate-100 dark:border-white/5 relative">
     <div class="flex justify-between items-center mb-12">
         <div>
             <h4 class="text-2xl font-black text-slate-900 dark:text-white">Pengaturan Landing Page</h4>
@@ -70,7 +70,7 @@ new class extends Component {
     <form wire:submit.prevent="save" class="space-y-8">
         <!-- Hero Section Config -->
         <div
-            class="p-8 rounded-[35px] bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5 relative">
+            class="p-6 md:p-8 rounded-[35px] bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5 relative">
             <h5 class="text-lg font-black text-indigo-600 dark:text-indigo-400 mb-6 uppercase tracking-widest">Bagian
                 Utama (Hero)</h5>
             <div class="space-y-6">
@@ -121,7 +121,7 @@ new class extends Component {
 
         <!-- Features Config -->
         <div
-            class="p-8 rounded-[35px] bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5 relative">
+            class="p-6 md:p-8 rounded-[35px] bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5 relative">
             <h5 class="text-lg font-black text-emerald-600 dark:text-emerald-400 mb-6 uppercase tracking-widest">Bagian
                 Keunggulan</h5>
             <div class="space-y-6">

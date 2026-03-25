@@ -6,13 +6,13 @@ use Livewire\Volt\Component;
 new class extends Component {
     public function getMyEbooksProperty()
     {
-        return auth()->user()->orders()->with('ebook.category')->where('status', 'completed')->latest()->get();
+        return auth()->user()->orders()->with('ebook.category')->whereIn('status', ['completed', 'paid', 'success'])->latest()->get();
     }
 }; ?>
 
-<div class="py-12 px-6 lg:px-12">
+<div class="py-6 md:py-12 px-4 md:px-12">
     <div class="max-w-7xl mx-auto">
-        <div class="mb-12 flex justify-between items-end">
+        <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div>
                 <h2 class="text-4xl font-black text-slate-900 dark:text-white">Koleksi <span
                         class="text-indigo-600">Saya</span></h2>
@@ -20,7 +20,7 @@ new class extends Component {
                 </p>
             </div>
             <a href="/"
-                class="px-8 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all">Cari
+                class="w-full md:w-auto px-8 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all text-center">Cari
                 Buku Baru</a>
         </div>
 
@@ -55,10 +55,16 @@ new class extends Component {
                                     E-BOOK</div>
                             @endif
                             <div
-                                class="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 transition-all duration-500 bg-gradient-to-t from-black/80 to-transparent">
+                                class="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 lg:translate-y-full group-hover:lg:translate-y-0 transition-all duration-500 bg-gradient-to-t from-black/80 to-transparent flex lg:block">
                                 <a href="{{ Storage::url($order->ebook->file_path) }}" target="_blank"
-                                    class="w-full py-4 bg-white text-slate-900 rounded-2xl font-black text-xs uppercase tracking-widest text-center block hover:bg-indigo-600 hover:text-white transition-all">Baca
+                                    class="w-full py-4 bg-white text-slate-900 rounded-2xl font-black text-xs uppercase tracking-widest text-center block hover:bg-indigo-600 hover:text-white transition-all shadow-lg">Baca
                                     Sekarang</a>
+                            </div>
+                            <!-- Mobile Always Visible Action -->
+                            <div class="lg:hidden absolute top-4 right-4 z-10">
+                                <a href="{{ Storage::url($order->ebook->file_path) }}" target="_blank" class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-2xl text-slate-900">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.247 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                </a>
                             </div>
                         </div>
                         <div class="space-y-4">
@@ -78,4 +84,6 @@ new class extends Component {
             </div>
         @endif
     </div>
+
+
 </div>

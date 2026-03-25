@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Katalog E-Book')
+@section('title', 'Katalog Produk')
 
 @section('content')
     <livewire:admin.ebook-manager />
