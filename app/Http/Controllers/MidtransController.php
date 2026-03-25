@@ -30,6 +30,14 @@ class MidtransController extends Controller
                     'status' => 'success',
                     'transaction_id' => $request->transaction_id
                 ]);
+
+                // Send success email via Queue
+                try {
+                    \Illuminate\Support\Facades\Mail::to($order->user)
+                        ->queue(new \App\Mail\PaymentSuccessMail($order));
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error('Gagal kirim email sukses pembayaran: ' . $e->getMessage());
+                }
             } elseif (in_array($request->transaction_status, ['cancel', 'deny', 'expire'])) {
                 $order->update(['status' => 'failed']);
             }

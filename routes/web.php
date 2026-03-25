@@ -25,7 +25,7 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/orders/{order}/invoice', [InvoiceController::class, 'show'])->name('orders.invoice');
     Route::get('/checkout/{ebook}', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('/checkout/{ebook}', [CheckoutController::class, 'process'])->name('checkout.process');
@@ -43,6 +43,10 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('admin/ebooks', function() {
         return view('admin.ebooks');
     })->name('admin.ebooks');
+
+    Route::get('admin/users', function() {
+        return view('admin.users');
+    })->name('admin.users');
 
     Route::get('admin/categories', function () {
         return view('admin.categories');

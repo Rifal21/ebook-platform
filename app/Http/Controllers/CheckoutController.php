@@ -14,6 +14,23 @@ class CheckoutController extends Controller
 {
     public function show(Ebook $ebook)
     {
+        $user = Auth::user();
+
+        // Check if already purchased
+        $alreadyPurchased = Order::where('user_id', $user->id)
+            ->where('ebook_id', $ebook->id)
+            ->whereIn('status', ['completed', 'paid', 'success'])
+            ->exists();
+
+        if ($alreadyPurchased) {
+            return redirect()->route('transactions')->with('error', 'Anda sudah memiliki e-book ini!');
+        }
+
+        // Validate Profile Completion
+        if (empty($user->phone_number) || empty($user->address)) {
+            return redirect()->route('profile')->with('status', 'profile-incomplete');
+        }
+
         return view('checkout', compact('ebook'));
     }
 
@@ -76,6 +93,14 @@ class CheckoutController extends Controller
                     'snap_token' => $data['token'],
                     'payment_url' => $data['redirect_url']
                 ]);
+
+                // Send Email via Queue
+                try {
+                    \Illuminate\Support\Facades\Mail::to(auth()->user())
+                        ->queue(new \App\Mail\PaymentLinkMail($order));
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error('Gagal kirim email pembayaran: ' . $e->getMessage());
+                }
 
                 return response()->json([
                     'redirect' => route('transactions'),
