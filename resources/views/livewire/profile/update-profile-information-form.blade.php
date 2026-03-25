@@ -82,6 +82,30 @@ new class extends Component
         </p>
     </header>
 
+    @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())
+        <div class="mt-6 p-6 bg-rose-50 dark:bg-rose-900/10 border border-rose-200 dark:border-rose-500/20 rounded-2xl flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-rose-500 rounded-xl flex items-center justify-center text-white text-xl shrink-0">
+                    <i class="fa-solid fa-envelope-circle-check"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-black text-rose-900 dark:text-rose-500">Email Belum Terverifikasi</h4>
+                    <p class="text-xs text-rose-700/70 dark:text-rose-500/60 font-medium">Silahkan verifikasi email Anda untuk mendapatkan akses penuh ke fitur pembelian.</p>
+                </div>
+            </div>
+            <button wire:click.prevent="sendVerification" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-lg transition-colors shrink-0">
+                Kirim Ulang Link
+            </button>
+        </div>
+
+        @if (session('status') === 'verification-link-sent')
+            <div class="mt-4 p-4 bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200 dark:border-emerald-500/20 rounded-xl flex items-center gap-3">
+                <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                <p class="text-xs font-bold text-emerald-800 dark:text-emerald-400">Link verifikasi baru telah dikirim!</p>
+            </div>
+        @endif
+    @endif
+
     <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
         <div>
             <x-input-label for="user_code" :value="__('Kode Unik Pengguna')" />
@@ -99,24 +123,6 @@ new class extends Component
             <x-input-label for="email" :value="__('Alamat Email')" />
             <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
-
-            @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        {{ __('Alamat email Anda belum terverifikasi.') }}
-
-                        <button wire:click.prevent="sendVerification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            {{ __('Klik di sini untuk mengirim ulang email verifikasi.') }}
-                        </button>
-                    </p>
-
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('Link verifikasi baru telah dikirim ke alamat email Anda.') }}
-                        </p>
-                    @endif
-                </div>
-            @endif
         </div>
 
         <div>

@@ -55,6 +55,15 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    public function sendEmailVerificationNotification()
+    {
+        try {
+            $this->notify(new \App\Notifications\QueuedVerifyEmail);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Gagal mengirim verifikasi email (queue error): ' . $e->getMessage());
+        }
+    }
+
     public function getIsAdminAttribute()
     {
         return $this->role === 'admin';

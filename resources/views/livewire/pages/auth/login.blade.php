@@ -24,7 +24,7 @@ new #[Layout('layouts.guest')] class extends Component {
             return;
         }
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('profile', absolute: false), navigate: true);
     }
 }; ?>
 
